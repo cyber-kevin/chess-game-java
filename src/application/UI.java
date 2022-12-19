@@ -4,6 +4,7 @@ import chess.ChessPiece;
 import chess.ChessPosition;
 import chess.Color;
 
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -23,12 +24,17 @@ public class UI {
 
     }
 
+    public static void clearScreen() {
+        System.out.println("\033[H\033[2J");
+        System.out.flush();
+    }
+
     public static ChessPosition readChessPosition(Scanner input) {
 
         try {
             String pos = input.nextLine();
-            char column = pos.charAt(0);
-            int row = Integer.parseInt(pos.substring(1));
+            char column = Character.toLowerCase(pos.charAt(0));
+            int row = Integer.parseInt(String.valueOf(pos.charAt(1)));
 
             return new ChessPosition(column, row);
         }
