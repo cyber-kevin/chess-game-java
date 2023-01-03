@@ -58,7 +58,7 @@ public class UI {
 
     private static void printPiece(ChessPiece piece, boolean possibleMove) {
 
-        Color background = Color.WHITE;
+        Color background = Color.EMPTY;
 
         if (possibleMove) {
             background = Color.CYAN_BACKGROUND;
@@ -75,7 +75,7 @@ public class UI {
             else {
                 color = piece.getColor();
             }
-            System.out.print(color.paint() + piece + color.reset());
+            System.out.print(background.paint() + color.paint() + piece + color.reset() + background.reset());
         }
         System.out.print(" ");
     }
