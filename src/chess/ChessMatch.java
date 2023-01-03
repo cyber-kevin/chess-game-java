@@ -10,6 +10,8 @@ import chess.pieces.Rook;
 public class ChessMatch {
 
     private Board board;
+    private int turn = 1;
+    private Color currentPLayer = Color.WHITE;
 
     public ChessMatch() {
         board = new Board(8, 8);
@@ -28,12 +30,22 @@ public class ChessMatch {
         return mat;
     }
 
+    public int getTurn() {
+        return turn;
+    }
+
+    public Color getCurrentPLayer() {
+        return currentPLayer;
+    }
+
     public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
         Position source = sourcePosition.toPosition();
         Position target = targetPosition.toPosition();
         validateSourcePosition(source);
         validateTargetPosition(source, target);
         Piece capturedPiece = makeMove(source, target);
+
+        nextTurn();
 
         return (ChessPiece) capturedPiece;
     }
@@ -46,9 +58,23 @@ public class ChessMatch {
         return capturedPiece;
     }
 
+    private void nextTurn() {
+        boolean wasBlack = currentPLayer == Color.BLACK;
+
+        if (wasBlack) {
+            currentPLayer = Color.WHITE;
+            turn++;
+        }
+        else {
+            currentPLayer = Color.BLACK;
+        }
+    }
+
     private void validateSourcePosition(Position position) {
         if (!board.thereIsAPiece(position))
             throw new ChessException("There is no piece on source position");
+        if (currentPLayer != ((ChessPiece) board.piece(position)).getColor())
+            throw new ChessException("The chosen piece is not yours");
         if (!board.piece(position).isThereAnyPossibleMove())
             throw new ChessException("There is no possible moves for the chosen piece");
     }
@@ -72,7 +98,7 @@ public class ChessMatch {
     private void initialSetup() {
         placeNewPiece('a', 1, new Rook(board, Color.WHITE));
         placeNewPiece('h', 1, new Rook(board, Color.WHITE));
-        placeNewPiece('e', 1, new King(board, Color.YELLOW));
+        placeNewPiece('e', 1, new King(board, Color.BLACK));
     }
 
 }

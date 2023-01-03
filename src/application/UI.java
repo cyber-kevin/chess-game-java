@@ -1,14 +1,23 @@
 package application;
 
+import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.ChessPosition;
 import chess.Color;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UI {
+
+    public static void printMatch(ChessMatch chessMatch) {
+        printBoard(chessMatch.getPieces());
+        System.out.println();
+        System.out.println("Turn: " + chessMatch.getTurn());
+        System.out.println("Waiting player: " + chessMatch.getCurrentPLayer());
+    }
 
     public static void printBoard(ChessPiece[][] pieces) {
 

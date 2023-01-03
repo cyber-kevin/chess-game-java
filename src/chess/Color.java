@@ -3,7 +3,7 @@ package chess;
 public enum Color {
 
     EMPTY(""),
-    BLACK("\u001B[1;30m"),
+    BLACK("\u001B[1;33m"), //but YELLOW haha
     RED("\u001B[1;31m"),
     GREEN("\u001B[1;32m"),
     YELLOW("\u001B[1;33m"),
