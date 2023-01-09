@@ -17,10 +17,18 @@ public class UI {
         printCapturedPieces(capturedPieces);
         System.out.println();
         System.out.println("Turn: " + chessMatch.getTurn());
-        System.out.println("Waiting player: " + chessMatch.getCurrentPLayer());
 
-        if (chessMatch.getCheck())
-            System.out.println("<< CHECK >>");
+        if (chessMatch.getCheckMate()) {
+            System.out.println("<< CHECKMATE >>");
+            System.out.println("Winner: " + chessMatch.getCurrentPLayer().paint() +
+                    chessMatch.getCurrentPLayer() +
+                    chessMatch.getCurrentPLayer().reset());
+        }
+        else {
+            if (chessMatch.getCheck())
+                System.out.println("<< CHECK >>");
+            System.out.println("Waiting player: " + chessMatch.getCurrentPLayer());
+        }
     }
 
     public static void printBoard(ChessPiece[][] pieces) {
