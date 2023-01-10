@@ -3,7 +3,6 @@ package chess.pieces;
 import boardgame.Position;
 import chess.ChessPiece;
 import boardgame.Board;
-
 import chess.Color;
 
 public class Bishop extends ChessPiece {
