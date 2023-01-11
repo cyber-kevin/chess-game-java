@@ -1,12 +1,9 @@
 package application;
 
-import boardgame.Board;
 import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.ChessPosition;
 import chess.exceptions.ChessException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;

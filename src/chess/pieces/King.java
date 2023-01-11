@@ -1,14 +1,19 @@
 package chess.pieces;
 
 import boardgame.Board;
+import boardgame.Piece;
 import boardgame.Position;
+import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.Color;
 
 public class King extends ChessPiece {
 
-    public King(Board board, Color color) {
+    private ChessMatch chessMatch;
+
+    public King(Board board, Color color, ChessMatch chessMatch) {
         super(board, color);
+        this.chessMatch = chessMatch;
     }
 
     @Override
@@ -56,4 +61,27 @@ public class King extends ChessPiece {
 
         return mat;
     }
+
+    public boolean testCastling(Position p) {
+        ChessPiece piece = (ChessPiece) getBoard().piece(p);
+        Piece[][] pieces = chessMatch.getPieces();
+
+        if (p.getColumn() < position.getColumn()) {
+            for (int i = position.getColumn() - 1; i > p.getColumn(); i--) {
+                if (pieces[position.getRow()][i] != null) {
+                    return false;
+                }
+            }
+        }
+        else {
+            for (int i = position.getColumn() + 1; i < p.getColumn(); i++) {
+                if (pieces[position.getRow()][i] != null) {
+                    return false;
+                }
+            }
+        }
+
+        return getMoveCount() == 0 && piece instanceof Rook && (piece.getColor() == getColor()) && piece.getMoveCount() == 0;
+    }
+
 }
