@@ -18,8 +18,6 @@ public class Queen extends ChessPiece {
     @Override
     public boolean[][] possibleMoves() {
 
-        System.out.println("entrou");
-
         boolean[][] mat = new boolean[getBoard().getRows()][getBoard().getColumns()];
         Position p = new Position(0, 0);
 
@@ -103,7 +101,6 @@ public class Queen extends ChessPiece {
             mat[p.getRow()][p.getColumn()] = true;
         }
 
-        System.out.println("saiu");
         return mat;
 
     }

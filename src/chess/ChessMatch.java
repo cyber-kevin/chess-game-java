@@ -6,6 +6,7 @@ import boardgame.Position;
 import chess.exceptions.ChessException;
 import chess.pieces.*;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class ChessMatch {
     private boolean check;
     private boolean checkMate;
     private ChessPiece enPassantVulnerable;
+    private ChessPiece promoted;
 
     public ChessMatch() {
         board = new Board(8, 8);
@@ -59,6 +61,10 @@ public class ChessMatch {
         return enPassantVulnerable;
     }
 
+    public ChessPiece getPromoted() {
+        return  promoted;
+    }
+
     public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
 
         Position source = sourcePosition.toPosition();
@@ -87,6 +93,15 @@ public class ChessMatch {
         }
 
         ChessPiece movedPiece = (ChessPiece) board.piece(target);
+
+        // #promotion
+        if (movedPiece instanceof Pawn) {
+            if ((movedPiece.getColor() == Color.WHITE && target.getRow() == 0) || (movedPiece.getColor() == Color.BLACK && target.getRow() == 7))
+                promoted = movedPiece;
+        }
+        else {
+            promoted = null;
+        }
 
         check = testCheck(opponent(currentPLayer));
         checkMate = testCheckMate(opponent(currentPLayer));
@@ -304,6 +319,31 @@ public class ChessMatch {
         return true;
     }
 
+    public ChessPiece replacePromotedPiece(ChessPiece promotedPiece, char promoteTo) {
+
+        if (!(promoteTo == 'R') && !(promoteTo == 'N') && !(promoteTo == 'B') && !(promoteTo == 'Q'))
+            throw new InvalidParameterException("Invalid type for promotion");
+
+        Position promotedPiecePosition = promotedPiece.getChessPosition().toPosition();
+
+        board.removePiece(promotedPiecePosition);
+        piecesOnTheBoard.remove(promotedPiece);
+
+        ChessPiece newPiece = newPiece(promoteTo, promotedPiece.getColor());
+
+        board.placePiece(newPiece, promotedPiecePosition);
+        piecesOnTheBoard.add(newPiece);
+
+        return newPiece;
+    }
+
+    private ChessPiece newPiece(char promoteTo, Color color) {
+        if (promoteTo == 'R') return new Rook(board, color);
+        else if (promoteTo == 'N') return new Knight(board, color);
+        else if (promoteTo == 'B') return new Bishop(board, color);
+        else return new Queen(board, color);
+    }
+
     private Color opponent(Color currentPLayer) {
         return currentPLayer == Color.WHITE ? Color.BLACK : Color.WHITE;
     }
@@ -344,13 +384,6 @@ public class ChessMatch {
         placeNewPiece('g', 7, new Pawn(board, Color.BLACK, this));
         placeNewPiece('h', 7, new Pawn(board, Color.BLACK, this));
 
-//        placeNewPiece('a', 1, new Rook(board, Color.WHITE));
-//        placeNewPiece('e', 1, new King(board, Color.WHITE, this));
-//        placeNewPiece('h', 1, new Rook(board, Color.WHITE));
-//        placeNewPiece('a', 8, new Rook(board, Color.BLACK));
-//        placeNewPiece('d', 8, new Queen(board, Color.BLACK));
-//        placeNewPiece('b', 8, new King(board, Color.BLACK, this));
-//        placeNewPiece('h', 8, new Rook(board, Color.BLACK));
     }
 
 }
